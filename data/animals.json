@@ -108,6 +108,15 @@
         "hungry"
       ],
       "id": "10"
+    },
+    {
+      "name": "Doggo",
+      "species": "Dog",
+      "diet": "carnivore",
+      "personalityTraits": [
+        "zany"
+      ],
+      "id": "11"
     }
   ]
 }

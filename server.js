@@ -8,6 +8,7 @@ const PORT = process.env.PORT || 3001;
 //instantiate the server
 const app = express();
 
+app.use(express.static("public"));
 // parse incoming string or array data
 app.use(express.urlencoded({ extended: true }));
 // parse incoming JSON data
@@ -59,11 +60,13 @@ function filterByQuery(query, animalsArray) {
   return filteredResults;
 }
 
+//find by id function
 function findById(id, animalsArray) {
   const result = animalsArray.filter((animal) => animal.id === id)[0];
   return result;
 }
 
+//create new animal and write to animals.json file
 function createNewAnimal(body, animalsArray) {
   const animal = body;
   animalsArray.push(animal);
@@ -74,6 +77,7 @@ function createNewAnimal(body, animalsArray) {
   return animal;
 }
 
+//confirm animal parameter entry types are as expected
 function validateAnimal(animal) {
   if (!animal.name || typeof animal.name !== "string") {
     return false;
@@ -112,6 +116,7 @@ app.get("/api/animals", (req, res) => {
   res.json(results);
 });
 
+//add data route id specific
 app.get("/api/animals/:id", (req, res) => {
   const result = findById(req.params.id, animals);
   if (result) {
@@ -129,6 +134,26 @@ app.post("/api/animals", (req, res) => {
   const animal = createNewAnimal(req.body, animals);
 
   res.json(animal);
+});
+
+//route for index.html
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "./public/index.html"));
+});
+
+//route for animals.html
+app.get("/animals", (req, res) => {
+  res.sendFile(path.join(__dirname, "./public/animals.html"));
+});
+
+//route for zookeepers.html
+app.get("/zookeepers", (req, res) => {
+  res.sendFile(path.join(__dirname, "./public/zookeepers.html"));
+});
+
+//route for wildcard entries
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "./public/index.html"));
 });
 
 //server listening
